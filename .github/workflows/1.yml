@@ -1,0 +1,66 @@
+# .github/workflows/build.yml
+name: HarmonyOS CI
+
+# 触发条件：当代码被推送到 main 或 master 分支时
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+# 允许手动触发
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. 拉取代码
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. 设置Java环境 (JDK 17是必须的)
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      # 3. 下载并解压HarmonyOS命令行工具 (Command Line Tools)
+      - name: Download HarmonyOS Command Line Tools
+        run: |
+          # 从华为官方渠道获取最新版Command Line Tools下载链接
+          wget -q -O commandline-tools.zip https://your-mirror-or-official-link/commandline-tools-linux-x64-5.0.5.XXX.zip
+          unzip -q commandline-tools.zip -d $HOME/commandline-tools
+
+      # 4. 配置环境变量
+      - name: Setup Environment
+        run: |
+          # 设置Node.js、hvigor、ohpm等工具的路径
+          CLI_DIR="$HOME/commandline-tools/command-line-tools"
+          echo "$CLI_DIR/sdk/default/openharmony/toolchains" >> $GITHUB_PATH
+          echo "$CLI_DIR/tool/node/bin" >> $GITHUB_PATH
+          echo "$CLI_DIR/bin" >> $GITHUB_PATH
+
+      # 5. (可选) 如果项目有oh-package.json5依赖，需要执行安装
+      - name: Install ohpm dependencies
+        run: |
+          # 检查ohpm命令是否可用
+          ohpm -v
+          ohpm install
+
+      # 6. 执行构建命令，生成HAP包
+      #   注意：-p product 后面的参数需要根据你项目 build-profile.json5 中的配置来定，通常是 default
+      - name: Build HAP
+        run: |
+          # 首次构建可能会有点慢
+          hvigorw clean
+          hvigorw assembleHap -p product=default -p buildMode=release
+
+      # 7. 上传构建产物 (HAP包)
+      - name: Upload HAP Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hap-build
+          path: |
+            **/build/outputs/hap/*.hap

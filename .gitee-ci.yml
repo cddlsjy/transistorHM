@@ -1,0 +1,20 @@
+stages:
+  - build
+
+build_harmony:
+  stage: build
+  tags:
+    - harmonyos
+  script:
+    # 1. 安装依赖（若使用 HPM）
+    - hpm install
+    
+    # 2. 构建 HAP 包
+    - ohos build --mode=release
+    
+    # 3. 查看构建产物
+    - ls -la build/outputs/
+  artifacts:
+    paths:
+      - build/outputs/
+    expire_in: 1 week

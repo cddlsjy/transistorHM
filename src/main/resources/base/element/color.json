@@ -1,0 +1,80 @@
+{
+  "color": [
+    {
+      "name": "start_window_background",
+      "value": "#FFFFFF"
+    },
+    {
+      "name": "primary",
+      "value": "#FF6200EE"
+    },
+    {
+      "name": "primary_variant",
+      "value": "#FF3700B3"
+    },
+    {
+      "name": "secondary",
+      "value": "#FF03DAC5"
+    },
+    {
+      "name": "background",
+      "value": "#FFFFFFFF"
+    },
+    {
+      "name": "surface",
+      "value": "#FFFFFFFF"
+    },
+    {
+      "name": "error",
+      "value": "#FFB00020"
+    },
+    {
+      "name": "on_primary",
+      "value": "#FFFFFFFF"
+    },
+    {
+      "name": "on_secondary",
+      "value": "#FF000000"
+    },
+    {
+      "name": "on_background",
+      "value": "#FF000000"
+    },
+    {
+      "name": "on_surface",
+      "value": "#FF000000"
+    },
+    {
+      "name": "on_error",
+      "value": "#FFFFFFFF"
+    },
+    {
+      "name": "toolbar_background",
+      "value": "#FFF5F5F5"
+    },
+    {
+      "name": "card_background",
+      "value": "#FFFFFFFF"
+    },
+    {
+      "name": "text_primary",
+      "value": "#DE000000"
+    },
+    {
+      "name": "text_secondary",
+      "value": "#99000000"
+    },
+    {
+      "name": "divider",
+      "value": "#1F000000"
+    },
+    {
+      "name": "starred",
+      "value": "#FFFFC107"
+    },
+    {
+      "name": "playing_indicator",
+      "value": "#FF4CAF50"
+    }
+  ]
+}

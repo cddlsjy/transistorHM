@@ -1,0 +1,144 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "Transistor - Radio App for HarmonyOS"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "Transistor Radio Player"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Transistor"
+    },
+    {
+      "name": "app_name",
+      "value": "Transistor"
+    },
+    {
+      "name": "app_description",
+      "value": "Simple Radio App for listening to radio programs over the internet"
+    },
+    {
+      "name": "add_station",
+      "value": "Add Station"
+    },
+    {
+      "name": "search_stations",
+      "value": "Search Stations"
+    },
+    {
+      "name": "settings",
+      "value": "Settings"
+    },
+    {
+      "name": "play",
+      "value": "Play"
+    },
+    {
+      "name": "stop",
+      "value": "Stop"
+    },
+    {
+      "name": "delete",
+      "value": "Delete"
+    },
+    {
+      "name": "edit",
+      "value": "Edit"
+    },
+    {
+      "name": "save",
+      "value": "Save"
+    },
+    {
+      "name": "cancel",
+      "value": "Cancel"
+    },
+    {
+      "name": "station_name",
+      "value": "Station Name"
+    },
+    {
+      "name": "stream_url",
+      "value": "Stream URL"
+    },
+    {
+      "name": "no_stations",
+      "value": "No stations added yet. Tap + to add a station."
+    },
+    {
+      "name": "loading",
+      "value": "Loading..."
+    },
+    {
+      "name": "error_network",
+      "value": "Network error. Please check your connection."
+    },
+    {
+      "name": "error_playback",
+      "value": "Unable to play this station."
+    },
+    {
+      "name": "search_hint",
+      "value": "Search for radio stations..."
+    },
+    {
+      "name": "no_results",
+      "value": "No stations found."
+    },
+    {
+      "name": "station_added",
+      "value": "Station added successfully"
+    },
+    {
+      "name": "station_deleted",
+      "value": "Station deleted"
+    },
+    {
+      "name": "descr_player_station_image",
+      "value": "Station logo"
+    },
+    {
+      "name": "theme_light",
+      "value": "Light"
+    },
+    {
+      "name": "theme_dark",
+      "value": "Dark"
+    },
+    {
+      "name": "theme_system",
+      "value": "System"
+    },
+    {
+      "name": "edit_stations",
+      "value": "Edit Stations"
+    },
+    {
+      "name": "playback_settings",
+      "value": "Playback Settings"
+    },
+    {
+      "name": "about",
+      "value": "About"
+    },
+    {
+      "name": "version",
+      "value": "Version"
+    },
+    {
+      "name": "tap_anywhere_playback",
+      "value": "Tap Anywhere to Play"
+    },
+    {
+      "name": "starred_stations",
+      "value": "Starred Stations"
+    },
+    {
+      "name": "all_stations",
+      "value": "All Stations"
+    }
+  ]
+}

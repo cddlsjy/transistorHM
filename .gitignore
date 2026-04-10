@@ -1,0 +1,16 @@
+# IDE 配置
+.idea/
+.deveco/
+
+# 构建产物
+build/
+dist/
+
+# 依赖缓存
+node_modules/
+.hpm/
+
+# 系统文件
+*.log
+.DS_Store
+Thumbs.db

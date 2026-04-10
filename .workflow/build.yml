@@ -1,0 +1,88 @@
+name: Build HarmonyOS HAP
+
+on:
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+  workflow_dispatch:    # 允许手动触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      # 安装 ohpm (HarmonyOS 包管理器)
+      - name: Install ohpm
+        run: |
+          wget https://repo.huaweicloud.com/harmonyos/ohpm/5.0.3/ohpm-5.0.3-linux-x64.tar.gz
+          tar -xzf ohpm-5.0.3-linux-x64.tar.gz
+          echo "$PWD/ohpm/bin" >> $GITHUB_PATH
+
+      # 下载 HarmonyOS SDK 命令行工具（以 API 12 为例）
+      - name: Download HarmonyOS Command Line Tools
+        run: |
+          wget https://repo.huaweicloud.com/harmonyos/command-line-tools/5.0.3/commandline-tools-linux-x64-5.0.3.900.zip
+          unzip commandline-tools-linux-x64-5.0.3.900.zip -d $HOME/harmonyos
+          echo "$HOME/harmonyos/command-line-tools/bin" >> $GITHUB_PATH
+
+      # 接受 HarmonyOS SDK 许可协议
+      - name: Accept HarmonyOS SDK Licenses
+        run: |
+          mkdir -p $HOME/harmonyos/licenses
+          echo -e "\n8933bad161af4178b1185d1a37fbf41e" > $HOME/harmonyos/licenses/ohos-sdk-license
+          echo "y" | $HOME/harmonyos/command-line-tools/bin/sdkmanager --licenses --sdk_root=$HOME/harmonyos
+
+      # 安装必要的 SDK 组件（可根据实际 API 版本调整）
+      - name: Install HarmonyOS SDK components
+        run: |
+          sdkmanager --sdk_root=$HOME/harmonyos \
+            "openharmony:12" \
+            "toolchains:5.0.3.900" \
+            "ets:5.0.3.900"
+
+      # 设置环境变量
+      - name: Setup environment variables
+        run: |
+          echo "HARMONY_HOME=$HOME/harmonyos" >> $GITHUB_ENV
+          echo "OHOS_SDK_HOME=$HOME/harmonyos" >> $GITHUB_ENV
+
+      # 进入项目目录并安装依赖
+      - name: Install dependencies
+        run: |
+          cd transistorHM-master
+          ohpm install --all
+
+      # 构建 HAP 包
+      - name: Build HAP
+        run: |
+          cd transistorHM-master
+          # 若仓库中包含 hvigorw 脚本，可直接执行
+          if [ -f "./hvigorw" ]; then
+            chmod +x ./hvigorw
+            ./hvigorw assembleHap --mode module -p product=default
+          else
+            # 否则通过 hvigor 命令行构建
+            hvigorw assembleHap --mode module -p product=default
+          fi
+
+      # 上传构建产物（HAP 文件）
+      - name: Upload HAP artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: transistor-hap
+          path: transistorHM-master/entry/build/default/outputs/default/*.hap

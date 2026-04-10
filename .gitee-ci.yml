@@ -1,16 +1,15 @@
-……# .gitee-ci.yml
-version: '1.0'
+# .gitee-ci.yml
 name: harmonyos-build
 displayName: 'HarmonyOS应用构建流水线'
 
-# 1. 定义触发条件：当代码推送到 master 分支时自动运行
+# 定义触发条件：当代码推送到 master 分支时自动运行
 triggers:
   push:
     branches:
       precise:
         - master
 
-# 2. 定义构建阶段
+# 定义构建阶段
 stages:
   - name: compile
     displayName: '编译构建'
@@ -25,7 +24,9 @@ stages:
           script: |
             wget -q https://repo.huaweicloud.com/harmonyos/command-line-tools/5.0.3/commandline-tools-linux-x64-5.0.3.900.zip
             unzip -q commandline-tools-linux-x64-5.0.3.900.zip -d $HOME/harmonyos
-            echo "$HOME/harmonyos/command-line-tools/bin" >> $GITHUB_PATH
+            echo "$HOME/harmonyos/command-line-tools/bin" >> $HOME/.bashrc
+            export PATH="$HOME/harmonyos/command-line-tools/bin:$PATH"
+
       - name: '接受SDK许可'
         uses: 'shell'
         with:
@@ -33,6 +34,7 @@ stages:
             mkdir -p $HOME/harmonyos/licenses
             echo -e "\n8933bad161af4178b1185d1a37fbf41e" > $HOME/harmonyos/licenses/ohos-sdk-license
             $HOME/harmonyos/command-line-tools/bin/sdkmanager --licenses --sdk_root=$HOME/harmonyos
+
       - name: '安装必要SDK组件'
         uses: 'shell'
         with:
@@ -41,6 +43,7 @@ stages:
               "openharmony:12" \
               "toolchains:5.0.3.900" \
               "ets:5.0.3.900"
+
       - name: 'Maven编译打包'
         uses: 'shell'
         with:
@@ -49,6 +52,7 @@ stages:
             # 执行HarmonyOS应用构建命令，生成HAP包
             hvigorw assembleHap --mode module -p product=default
             echo "构建完成，产物位于：transistorHM-master/entry/build/default/outputs/default/"
+
       - name: '归档构建产物'
         uses: 'upload-artifact'
         with:

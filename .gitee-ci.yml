@@ -1,0 +1,27 @@
+# .gitee-ci.yml
+
+stages:
+  - build
+
+build_harmonyos:
+  stage: build
+  script:
+    - echo "✅ 开始构建 HarmonyOS 应用..."
+    - wget -q https://repo.huaweicloud.com/harmonyos/command-line-tools/5.0.3/commandline-tools-linux-x64-5.0.3.900.zip
+    - unzip -q commandline-tools-linux-x64-5.0.3.900.zip -d $HOME/harmonyos
+    - echo "export PATH=\"\$HOME/harmonyos/command-line-tools/bin:\$PATH\"" >> $HOME/.bashrc
+    - source $HOME/.bashrc
+
+    - mkdir -p $HOME/harmonyos/licenses
+    - echo -e "\n8933bad161af4178b1185d1a37fbf41e" > $HOME/harmonyos/licenses/ohos-sdk-license
+
+    - $HOME/harmonyos/command-line-tools/bin/sdkmanager --sdk_root=$HOME/harmonyos "openharmony:12" "toolchains:5.0.3.900" "ets:5.0.3.900"
+
+    - cd transistorHM-master
+    - hvigorw assembleHap --mode module -p product=default
+
+    - echo "✅ 构建完成，产物位于：transistorHM-master/entry/build/default/outputs/default/"
+  artifacts:
+    paths:
+      - transistorHM-master/entry/build/default/outputs/default/*.hap
+    expire_in: 1 week
